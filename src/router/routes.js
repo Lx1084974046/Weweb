@@ -15,11 +15,19 @@ export const routes = [
     ]
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/modules',
+    name: 'modules',
+    meta: { title: "模版管理", icon: "home-wifi-fill" },
+    component: Layout,
+    children:[{
+      path:"create",
+      name:"create",
+      meta:{title:"模版管理"}
+    }]
+  },
+  {
+    path:'/weweb',
+    name:'weweb',
+    component: () => import("@/views/Weweb")
   }
 ]

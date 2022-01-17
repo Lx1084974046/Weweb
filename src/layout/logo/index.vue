@@ -2,7 +2,7 @@
   <div class="logo-container">
     <div class="icon-logo">
       <img class="logo-img" src="../../assets/icon/aislogo.png" alt="" />
-      <span class="logo-title">Weweb</span>
+      <span class="logo-title" v-if="collapsed">Weweb</span>
     </div>
     <div class="game-code">
       <a-select
@@ -33,6 +33,7 @@ import { useStore } from 'vuex';
 import { ref, reactive, toRefs, onMounted } from 'vue';
 export default {
   name: '',
+  props: ['collapsed'],
   setup() {
     const store = useStore();
     const state = reactive({});

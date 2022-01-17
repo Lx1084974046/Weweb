@@ -1,15 +1,13 @@
 <template>
-  <div class="welcome">
-    <House />
+  <div class="house-icon">
+    <img class="logo-img" src="../../../assets/icon/home-icon.png" alt="" />
   </div>
 </template>
 
 <script>
-import House from '../views/dashboard/house/index';
 import { reactive, toRefs, onMounted } from 'vue';
 export default {
   name: '',
-  components: { House },
   setup() {
     const state = reactive({});
     onMounted(() => {});
@@ -19,12 +17,6 @@ export default {
   }
 };
 </script>
-<style scoped>
-.welcome {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+<style lang="less" scoped>
+@import './index.less';
 </style>

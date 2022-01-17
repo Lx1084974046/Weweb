@@ -6,7 +6,7 @@
       collapsible
       width="250"
     >
-      <Logo />
+      <Logo :collapsed="collapsed" />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <a-menu-item key="1">
           <user-outlined />
@@ -23,18 +23,7 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <menu-fold-outlined
-          v-else
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-      </a-layout-header>
+      <Header :collapsed="collapsed" @changeCollapsed="changeCollapsed" />
       <a-layout-content>
         <router-view></router-view>
       </a-layout-content>
@@ -43,6 +32,7 @@
 </template>
 <script>
 import Logo from './logo';
+import Header from './header';
 import {
   UserOutlined,
   VideoCameraOutlined,
@@ -56,15 +46,19 @@ export default defineComponent({
     UserOutlined,
     VideoCameraOutlined,
     UploadOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    Logo
+    Logo,
+    Header
   },
-
   setup() {
+    let selectedKeys = ref(['1']);
+    let collapsed = ref(false);
+    const changeCollapsed = () => {
+      collapsed.value = !collapsed.value;
+    };
     return {
-      selectedKeys: ref(['1']),
-      collapsed: ref(false)
+      selectedKeys,
+      collapsed,
+      changeCollapsed
     };
   }
 });
