@@ -22,8 +22,10 @@ export const routes = [
     children:[{
       path:"create",
       name:"create",
-      meta:{title:"模版管理"}
-    }]
+      meta:{title:"模版管理"},
+      component: () => import("@/views/dashboard/modules/create")
+    }
+  ]
   },
   {
     path:'/weweb',

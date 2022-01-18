@@ -7,14 +7,14 @@
           :class="currentNav === index ? 'nav nav-active' : 'nav'"
           v-for="(item, index) in navList"
           :key="item"
-          @click="changeNav(index)"
+          @click="changeNav(index, item.comp)"
         >
           <Icon :icon="item.icon" />
           <span>{{ item.title }}</span>
         </div>
       </div>
       <div class="content">
-        <Home />
+        <component :is="currentComponent"></component>
       </div>
     </div>
   </div>
@@ -22,30 +22,43 @@
 
 <script>
 import Home from '../components/weweb/Home';
+import Intro from '../components/weweb/Intro';
+import Activity from '../components/weweb/Activity';
+import Video from '../components/weweb/Video';
 import Icon from '@/layout/icon';
-import { reactive, toRefs, onMounted, computed } from 'vue';
+import { ref, reactive, toRefs, onMounted, computed } from 'vue';
 export default {
   name: '',
   components: {
     Icon,
-    Home
+    Home,
+    Intro,
+    Activity,
+    Video
   },
   setup() {
+    let currentComponent = ref('Home');
     const state = reactive({
       navList: [
-        { title: '首页', icon: 'home-4-line', isShow: true },
-        { title: '介绍', icon: 'newspaper-line', isShow: true },
-        { title: '活动', icon: 'gift-2-line', isShow: true },
-        { title: '商城', icon: 'money-cny-circle-line', isShow: false },
-        { title: '视频', icon: 'play-circle-line', isShow: true }
+        { title: '首页', comp: 'Home', icon: 'home-4-line', isShow: true },
+        { title: '介绍', comp: 'Intro', icon: 'newspaper-line', isShow: true },
+        { title: '活动', comp: 'Activity', icon: 'gift-2-line', isShow: true },
+        {
+          title: '商城',
+          comp: 'Store',
+          icon: 'money-cny-circle-line',
+          isShow: false
+        },
+        { title: '视频', comp: 'Video', icon: 'play-circle-line', isShow: true }
       ]
     });
     const stateInfo = reactive({
       currentNav: 0,
       navList: computed(() => state.navList.filter((item) => item.isShow))
     });
-    const changeNav = (index) => {
+    const changeNav = (index, comp) => {
       stateInfo.currentNav = index;
+      currentComponent.value = comp;
     };
     window.addEventListener(
       'orientationchange',
@@ -58,6 +71,7 @@ export default {
     onMounted(() => {});
     return {
       changeNav,
+      currentComponent,
       ...toRefs(stateInfo)
     };
   }

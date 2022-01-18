@@ -54,6 +54,7 @@ export default defineComponent({
     let collapsed = ref(false);
     const changeCollapsed = () => {
       collapsed.value = !collapsed.value;
+      console.log(collapsed.value, 123456);
     };
     return {
       selectedKeys,

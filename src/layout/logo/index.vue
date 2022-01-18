@@ -2,7 +2,7 @@
   <div class="logo-container">
     <div class="icon-logo">
       <img class="logo-img" src="../../assets/icon/aislogo.png" alt="" />
-      <span class="logo-title" v-if="collapsed">Weweb</span>
+      <span class="logo-title" v-if="!collapsed">Weweb</span>
     </div>
     <div class="game-code">
       <a-select
