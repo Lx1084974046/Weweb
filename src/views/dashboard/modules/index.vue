@@ -1,5 +1,5 @@
 <template>
-  <div>配置</div>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -8,9 +8,7 @@ export default {
   name: '',
   setup() {
     const state = reactive({});
-    onMounted(() => {
-      console.log('3.-组件挂载到页面之后执行-------onMounted');
-    });
+    onMounted(() => {});
     return {
       ...toRefs(state)
     };

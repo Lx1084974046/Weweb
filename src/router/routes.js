@@ -1,5 +1,5 @@
 import Layout from "../layout";
-export const routes = [
+export default [
   {
     path: '/',
     name: '/',
@@ -9,7 +9,7 @@ export const routes = [
       {
         path: "index",
         name: "Index",
-        meta: { title: "首页", icon: "home-wifi-fill" },
+        meta: { title: "首页", icon: "home-wifi-line" },
         component: () => import("@/views/Home")
       }
     ]
@@ -17,13 +17,29 @@ export const routes = [
   {
     path: '/modules',
     name: 'modules',
-    meta: { title: "模版管理", icon: "home-wifi-fill" },
+    meta: { title: "微社区", icon: "layout-top-line" },
     component: Layout,
+    redirect:"/modules/manage",
     children:[{
-      path:"create",
-      name:"create",
+      path:"manage",
+      name:"manage",
+      redirect:"/modules/manage/create",
       meta:{title:"模版管理"},
-      component: () => import("@/views/dashboard/modules/create")
+      component: () => import("@/views/dashboard/modules"),
+      children:[
+        {
+          path:"create",
+          name:"create",
+          meta:{title:"创建模版"},
+          component: () => import("@/views/dashboard/modules/create")
+        },
+        {
+          path:"config",
+          name:"config",
+          meta:{title:"配置模版"},
+          component: () => import("@/views/dashboard/modules/config")
+        }
+      ]
     }
   ]
   },
