@@ -137,6 +137,10 @@ export default defineComponent({
 });
 </script>
 <style>
+.ant-layout-content{
+ margin: 10px;
+ overflow: auto;
+}
 .layout-wrap {
   height: 100vh;
 }
