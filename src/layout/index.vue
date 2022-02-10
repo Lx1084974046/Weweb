@@ -62,6 +62,7 @@ import {
   defineComponent,
   ref,
   onBeforeMount,
+  onMounted,
   reactive,
   toRefs,
   watchEffect
@@ -117,6 +118,11 @@ export default defineComponent({
     onBeforeMount(() => {
       renderSlider();
     });
+    onMounted(() => {
+      if (!localStorage.getItem('webList')) {
+        localStorage.setItem('webList', JSON.stringify({}));
+      }
+    });
     watchEffect(() => {
       console.log(currentRoute);
       if (currentRoute.value.matched.length > 2) {
@@ -137,9 +143,9 @@ export default defineComponent({
 });
 </script>
 <style>
-.ant-layout-content{
- margin: 10px;
- overflow: auto;
+.ant-layout-content {
+  margin: 10px;
+  overflow: auto;
 }
 .layout-wrap {
   height: 100vh;

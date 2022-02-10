@@ -30,7 +30,6 @@
     <a-modal
       v-model:visible="modelVisible"
       title="新增社区模版"
-      :confirm-loading="confirmLoading"
       cancelText="取消"
       okText="确定"
       @ok="addOkChange"
@@ -49,14 +48,16 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import { message } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { reactive, toRefs, onMounted } from 'vue';
+import { reactive, toRefs, ref, onMounted } from 'vue';
 export default {
   name: '',
   components: {
     PlusOutlined
   },
   setup() {
+    const formRef = ref(null);
     const router = useRouter();
     const state = reactive({
       modalFormState: {},
@@ -71,16 +72,28 @@ export default {
         }
       ]
     };
-    const addOkChange = () => {};
+    const getChangeList = () => {
+      localStorage.getItem('gameCode');
+    };
+    const addOkChange = async () => {
+      console.log(formRef.value);
+      await formRef.value.validate();
+      console.log('通过验证');
+      message.success('创建成功');
+      state.modelVisible = false;
+      await formRef.value.resetFields();
+    };
     const showModel = () => {
       state.modelVisible = true;
     };
     onMounted(() => {
-      console.log('3.-组件挂载到页面之后执行-------onMounted');
+      console.log(JSON.parse(localStorage.getItem('webList')), 99999);
     });
     return {
+      formRef,
       router,
       rules,
+      addOkChange,
       showModel,
       ...toRefs(state)
     };
@@ -93,7 +106,7 @@ export default {
 }
 .ant-card-meta-title {
   text-align: left;
-  margin-bottom: 0;
+  margin-bottom: 2px !important;
 }
 </style>
 <style lang="less" scoped>
