@@ -7,7 +7,7 @@
       width="250"
       v-if="siderShow"
     >
-      <Logo :collapsed="collapsed" />
+      <Logo @upDateMenu="upDateMenu" :collapsed="collapsed" />
       <a-menu
         v-model:selectedKeys="selectedKeys"
         v-model:openKeys="openKeys"
@@ -22,7 +22,7 @@
               item.meta.title
             }}</span>
           </a-menu-item>
-          <a-sub-menu :key="item.path" v-else>
+          <a-sub-menu :key="item.path" v-if="item.child && gameCode">
             <template #title>
               <Icon :icon="item.meta.icon" />
               <span class="menu-item" v-if="!collapsed">{{
@@ -81,12 +81,17 @@ export default defineComponent({
     const { currentRoute } = useRouter();
     const state = reactive({
       navList: [],
+      gameCode: localStorage.getItem('gameCode'),
       selectedKeys: [],
       openKeys: [],
       siderShow: false
     });
     let selectedKeys = ref(['1']);
     let collapsed = ref(false);
+    const upDateMenu = () => {
+      state.gameCode = localStorage.getItem('gameCode');
+      router.push({ path: '/index' });
+    };
     const changeCollapsed = () => {
       collapsed.value = !collapsed.value;
     };
@@ -119,8 +124,8 @@ export default defineComponent({
       renderSlider();
     });
     onMounted(() => {
-      if (!localStorage.getItem('webList')) {
-        localStorage.setItem('webList', JSON.stringify({}));
+      if (!localStorage.getExpire('webList')) {
+        localStorage.setExpire('webList', {});
       }
     });
     watchEffect(() => {
@@ -135,6 +140,7 @@ export default defineComponent({
     return {
       selectedKeys,
       collapsed,
+      upDateMenu,
       changeCollapsed,
       menuHandleClick,
       ...toRefs(state)

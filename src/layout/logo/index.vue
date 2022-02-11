@@ -34,7 +34,7 @@ import { ref, reactive, toRefs, onMounted } from 'vue';
 export default {
   name: '',
   props: ['collapsed'],
-  setup() {
+  setup(props, { emit }) {
     const store = useStore();
     const state = reactive({});
     const gameCode = store.state.gameCode;
@@ -45,6 +45,7 @@ export default {
     ]);
     const selectChange = (value) => {
       localStorage.setItem('gameCode', value);
+      emit('upDateMenu');
     };
 
     onMounted(() => {

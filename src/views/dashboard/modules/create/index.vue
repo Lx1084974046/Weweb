@@ -5,14 +5,18 @@
       <span>新增社区模版</span>
     </div>
     <a-card
+      v-for="item in webList"
+      :key="item"
       hoverable
       class="card-item"
-      @click="router.push({ name: 'config', query: { id: 456 } })"
+      @click="router.push({ name: 'config', query: { id: item.code } })"
     >
       <template #cover>
-        <i class="img-logo"></i>
+        <i class="img-logo1" v-if="gameCode == 'wangzhe'"></i>
+        <i class="img-logo2" v-if="gameCode == 'cf'"></i>
+        <i class="img-logo3" v-if="gameCode == 'lol'"></i>
       </template>
-      <a-card-meta title="方案一">
+      <a-card-meta :title="item.name">
         <template #description>
           <div class="desc-box">
             <!-- <a-tag color="purple" class="tag-des">
@@ -21,7 +25,7 @@
             </a-tag> -->
             <a-tag color="orange" class="tag-des">
               <span>专题Code:</span>
-              {{ 'dasdasdasdas' }}
+              {{ item.code }}
             </a-tag>
           </div>
         </template>
@@ -47,6 +51,14 @@
 </template>
 
 <script>
+function getRangeCode(len = 6) {
+  var orgStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let returnStr = '';
+  for (var i = 0; i < len; i++) {
+    returnStr += orgStr.charAt(Math.floor(Math.random() * orgStr.length));
+  }
+  return returnStr;
+}
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
@@ -61,7 +73,13 @@ export default {
     const router = useRouter();
     const state = reactive({
       modalFormState: {},
-      modelVisible: false
+      modelVisible: false,
+      gameCode: localStorage.getItem('gameCode'),
+      webList: localStorage.getExpire('webList')[
+        localStorage.getItem('gameCode')
+      ]
+        ? localStorage.getExpire('webList')[localStorage.getItem('gameCode')]
+        : []
     });
     const rules = {
       name: [
@@ -72,22 +90,38 @@ export default {
         }
       ]
     };
+    if (!localStorage.getItem('gameCode')) {
+      router.push({ path: '/' });
+    }
     const getChangeList = () => {
-      localStorage.getItem('gameCode');
+      state.webList =
+        localStorage.getExpire('webList')[localStorage.getItem('gameCode')];
     };
     const addOkChange = async () => {
-      console.log(formRef.value);
       await formRef.value.validate();
       console.log('通过验证');
+      let gameCode = localStorage.getItem('gameCode');
+      console.log(localStorage.getExpire('webList'));
+      state.modalFormState.code = getRangeCode();
+      if (localStorage.getExpire('webList').hasOwnProperty(gameCode)) {
+        let obj = localStorage.getExpire('webList');
+        obj.gameCode.push(state.modalFormState);
+        localStorage.setExpire('webList', obj);
+      } else {
+        let obj = localStorage.getExpire('webList');
+        obj[gameCode] = [state.modalFormState];
+        localStorage.setExpire('webList', obj);
+      }
       message.success('创建成功');
       state.modelVisible = false;
       await formRef.value.resetFields();
+      getChangeList();
     };
     const showModel = () => {
       state.modelVisible = true;
     };
     onMounted(() => {
-      console.log(JSON.parse(localStorage.getItem('webList')), 99999);
+      console.log(localStorage.getExpire('webList'), 99999);
     });
     return {
       formRef,
